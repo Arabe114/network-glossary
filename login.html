@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Glossário Técnico Essencial</title>
+    <link rel="icon" type="image/jpeg" href="images/favicon.jpg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'luxtel-purple': '#8c1bab',
+                        'luxtel-pink': '#e0007c',
+                        'luxtel-pink-dark': '#c7006f'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        /* Light mode styles */
+        body {
+            background: #ffffff;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+        
+        /* Dark mode styles */
+        .dark body {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #f9fafb;
+        }
+        
+        .login-form {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .dark .login-form {
+            background: rgba(31, 41, 55, 0.95);
+            border: 1px solid #374151;
+        }
+        
+        .input-field {
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            border-color: #8c1bab;
+            box-shadow: 0 0 0 3px rgba(140, 27, 171, 0.1);
+        }
+        
+        .dark .input-field {
+            background: #374151;
+            border: 1px solid #4b5563;
+            color: #f9fafb;
+        }
+        
+        .dark .input-field:focus {
+            border-color: #8c1bab;
+            box-shadow: 0 0 0 3px rgba(140, 27, 171, 0.1);
+        }
+        
+        .login-btn {
+            background: #8c1bab;
+            transition: all 0.3s ease;
+        }
+        
+        .login-btn:hover {
+            background: #7c1a9b;
+            transform: translateY(-1px);
+        }
+        
+        .error-message {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <!-- Theme Toggle -->
+    <button id="themeToggle" class="fixed top-4 right-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+        <svg id="sunIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        </svg>
+        <svg id="moonIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+        </svg>
+    </button>
+
+    <!-- Login Form -->
+    <div class="login-form rounded-lg shadow-lg p-8 w-full max-w-md">
+        <form id="loginForm" class="space-y-6">
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Usuário</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username"
+                    class="input-field w-full px-4 py-3 rounded-lg focus:outline-none"
+                    placeholder="Digite seu usuário"
+                    required
+                >
+            </div>
+            
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Senha</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password"
+                    class="input-field w-full px-4 py-3 rounded-lg focus:outline-none"
+                    placeholder="Digite sua senha"
+                    required
+                >
+            </div>
+            
+            <!-- Error Message -->
+            <div id="errorMessage" class="hidden error-message bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg">
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Usuário ou senha incorretos!</span>
+                </div>
+            </div>
+            
+            <!-- Login Button -->
+            <button 
+                type="submit" 
+                class="login-btn w-full py-3 px-4 rounded-lg text-white font-semibold focus:outline-none focus:ring-4 focus:ring-luxtel-purple/20"
+            >
+                <span id="loginText">Entrar</span>
+                <span id="loadingText" class="hidden">
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Entrando...
+                </span>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Authentication credentials
+        const VALID_USERNAME = 'admin';
+        const VALID_PASSWORD = 'luxtel@noc@1945';
+        
+        // DOM elements
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const errorMessage = document.getElementById('errorMessage');
+        const loginText = document.getElementById('loginText');
+        const loadingText = document.getElementById('loadingText');
+        const themeToggle = document.getElementById('themeToggle');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        
+        // Check if user is already logged in
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            window.location.href = 'index.html';
+        }
+        
+        // Login form submission
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+            
+            // Show loading state
+            loginText.classList.add('hidden');
+            loadingText.classList.remove('hidden');
+            
+            // Simulate authentication delay
+            setTimeout(() => {
+                if (username === VALID_USERNAME && password === VALID_PASSWORD) {
+                    // Successful login
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('loginTime', new Date().getTime());
+                    
+                    // Redirect to main page
+                    window.location.href = 'index.html';
+                } else {
+                    // Failed login
+                    showError();
+                    
+                    // Reset loading state
+                    loginText.classList.remove('hidden');
+                    loadingText.classList.add('hidden');
+                    
+                    // Clear password field
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            }, 1000);
+        });
+        
+        // Show error message
+        function showError() {
+            errorMessage.classList.remove('hidden');
+            setTimeout(() => {
+                errorMessage.classList.add('hidden');
+            }, 3000);
+        }
+        
+        // Theme toggle functionality
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('color-theme', isDark ? 'dark' : 'light');
+            
+            if (isDark) {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+        }
+        
+        // Initialize theme
+        function initTheme() {
+            const savedTheme = localStorage.getItem('color-theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+        
+        // Event listeners
+        themeToggle.addEventListener('click', toggleTheme);
+        
+        // Initialize
+        initTheme();
+        
+        // Focus username input on load
+        usernameInput.focus();
+    </script>
+</body>
+</html>

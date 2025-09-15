@@ -4,6 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Glossário Técnico Essencial</title>
+    <script>
+        // Authentication check - redirect to login if not authenticated
+        (function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const loginTime = localStorage.getItem('loginTime');
+            const currentTime = new Date().getTime();
+            const sessionDuration = 24 * 60 * 60 * 1000; // 24 hours
+            
+            // Check if user is logged in and session is still valid
+            if (!isLoggedIn || isLoggedIn !== 'true' || !loginTime || (currentTime - parseInt(loginTime)) > sessionDuration) {
+                // Clear expired session
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('loginTime');
+                // Redirect to login page
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -188,7 +206,12 @@
                 <div class="flex-1">
                     <h1 class="text-4xl md:text-5xl font-bold text-luxtel-purple dark:text-luxtel-purple gradient-text animate-fade-in-down" style="animation-delay: 0.1s;">Glossário Essencial</h1>
                 </div>
-                <div class="flex-1 flex justify-end">
+                <div class="flex-1 flex justify-end space-x-2">
+                    <button id="logout-btn" class="p-2 rounded-full bg-red-500 hover:bg-red-600 text-white transition-colors" title="Sair">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                    </button>
                     <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
                         <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
@@ -622,6 +645,14 @@
                 document.documentElement.classList.add('dark');
                 localStorage.setItem('color-theme', 'dark');
             }
+        });
+
+        // Logout functionality
+        const logoutBtn = document.getElementById('logout-btn');
+        logoutBtn.addEventListener('click', function() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('loginTime');
+            window.location.href = 'login.html';
         });
 
         // Initial render
