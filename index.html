@@ -9,14 +9,16 @@
         (function() {
             const isLoggedIn = localStorage.getItem('isLoggedIn');
             const loginTime = localStorage.getItem('loginTime');
+            const rememberMe = localStorage.getItem('rememberMe');
             const currentTime = new Date().getTime();
-            const sessionDuration = 24 * 60 * 60 * 1000; // 24 hours
+            const sessionDuration = rememberMe === 'true' ? 7 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000; // 7 days or 24 hours
             
             // Check if user is logged in and session is still valid
             if (!isLoggedIn || isLoggedIn !== 'true' || !loginTime || (currentTime - parseInt(loginTime)) > sessionDuration) {
                 // Clear expired session
                 localStorage.removeItem('isLoggedIn');
                 localStorage.removeItem('loginTime');
+                localStorage.removeItem('rememberMe');
                 // Redirect to login page
                 window.location.href = 'login.html';
             }
