@@ -23,6 +23,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="auth.js"></script>
     <style>
         * {
             font-family: 'Inter', sans-serif;
@@ -161,9 +162,7 @@
     </div>
 
     <script>
-        // Authentication credentials
-        const VALID_USERNAME = 'admin';
-        const VALID_PASSWORD = 'luxtel@noc@1945';
+        // Authentication credentials - moved to external file for security
         
         // DOM elements
         const loginForm = document.getElementById('loginForm');
@@ -194,7 +193,7 @@
             
             // Simulate authentication delay
             setTimeout(() => {
-                if (username === VALID_USERNAME && password === VALID_PASSWORD) {
+                if (AUTH_CONFIG.validate(username, password)) {
                     // Successful login
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('loginTime', new Date().getTime());
