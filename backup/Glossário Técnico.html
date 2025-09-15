@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossário Técnico Essencial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'luxtel-purple': '#8c1bab',
+                        'luxtel-pink': '#e0007c',
+                        'luxtel-pink-dark': '#c7006f'
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        /* Light mode styles */
+        body {
+            background: #ffffff;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+        
+        /* Dark mode styles */
+        .dark body {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #f9fafb;
+        }
+        
+        /* Accordion styles */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in-down {
+            animation: fadeInDown 0.6s ease-out forwards;
+        }
+        
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .scroll-animate.in-view {
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #8c1bab, #e0007c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Theme toggle button */
+        #theme-toggle {
+            transition: all 0.3s ease;
+        }
+        
+        #theme-toggle:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Search input dark mode */
+        .dark input[type="text"] {
+            background-color: #374151;
+            border-color: #4b5563;
+            color: #f9fafb;
+        }
+        
+        .dark input[type="text"]:focus {
+            border-color: #e0007c;
+            background-color: #4b5563;
+        }
+        
+        .dark input[type="text"]::placeholder {
+            color: #9ca3af;
+        }
+        
+        /* Accordion items dark mode */
+        .dark .accordion-item {
+            background-color: #374151;
+            border-color: #4b5563;
+        }
+        
+        .dark .accordion-item:hover {
+            background-color: #4b5563;
+        }
+        
+        /* Button styles for dark mode */
+        .dark .bg-luxtel-purple {
+            background-color: #8c1bab;
+        }
+        
+        .dark .bg-green-600 {
+            background-color: #059669;
+        }
+        
+        /* Footer dark mode */
+        .dark footer {
+            color: #d1d5db;
+        }
+        
+        /* Custom utility classes */
+        .text-luxtel-purple { color: #8c1bab; }
+        .text-luxtel-pink { color: #e0007c; }
+        .bg-luxtel-pink { background-color: #e0007c; }
+        .bg-luxtel-purple { background-color: #e0007c; }
+        .hover\:bg-luxtel-purple-light:hover { background-color: rgba(140, 27, 171, 0.1); }
+        .dark .hover\:bg-luxtel-purple-light:hover { background-color: rgba(140, 27, 171, 0.2); }
+        .focus\:ring-luxtel-pink:focus { --tw-ring-color: #e0007c; }
+        .border-luxtel-pink-light { border-color: rgba(224, 0, 124, 0.3); }
+        .border-luxtel-pink-lighter { border-color: rgba(224, 0, 124, 0.2); }
+        .bg-luxtel-pink-light { background-color: rgba(224, 0, 124, 0.2); }
+        .text-luxtel-pink-dark { color: #c7006f; }
+        
+        /* Dark mode overrides for custom colors */
+        .dark .text-luxtel-purple { color: #a855f7; }
+        .dark .text-luxtel-pink { color: #ec4899; }
+        .dark .border-luxtel-pink-light { border-color: rgba(236, 72, 153, 0.3); }
+        .dark .border-luxtel-pink-lighter { border-color: rgba(236, 72, 153, 0.2); }
+        .dark .bg-luxtel-pink-light { background-color: rgba(236, 72, 153, 0.2); }
+    </style>
+</head>
+<body>
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+        
+        <header class="relative text-center mb-6 p-4">
+            <div class="flex justify-between items-center">
+                <div class="flex-1"></div>
+                <div class="flex-1">
+                    <h1 class="text-4xl md:text-5xl font-bold text-luxtel-purple dark:text-luxtel-purple gradient-text animate-fade-in-down" style="animation-delay: 0.1s;">Glossário Essencial</h1>
+                </div>
+                <div class="flex-1 flex justify-end">
+                    <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                        <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                        <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <p class="text-lg text-luxtel-pink dark:text-luxtel-pink mt-2 animate-fade-in-down" style="animation-delay: 0.2s;">Guia técnico para a triagem</p>
+        </header>
+
+        <!-- Search and Export Section -->
+        <div class="mb-8 max-w-4xl mx-auto">
+            <div class="flex flex-col md:flex-row gap-4 items-center justify-between mb-6">
+                <div class="relative flex-1 w-full">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </span>
+                    <input type="text" id="search-bar" placeholder="Pesquisar por título ou conteúdo..." class="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-luxtel-pink focus:border-transparent transition bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                </div>
+                
+                <div class="flex gap-3">
+                    <button onclick="exportToPDF()" class="bg-luxtel-pink hover:bg-luxtel-pink-dark dark:bg-luxtel-pink dark:hover:bg-luxtel-pink-dark text-white px-4 py-2 rounded-lg shadow-md transition-colors duration-200 flex items-center gap-2" style="background-color: #e0007c !important;" onmouseover="this.style.backgroundColor='#c7006f'" onmouseout="this.style.backgroundColor='#e0007c'">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        PDF
+                    </button>
+                    
+                    <button onclick="exportToExcel()" class="bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-500 text-white px-4 py-2 rounded-lg shadow-md transition-colors duration-200 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+                        Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <main class="max-w-4xl mx-auto">
+            <div id="accordionContainer" class="space-y-3">
+                <!-- Accordion items will be generated here -->
+            </div>
+        </main>
+        
+        <footer class="text-center mt-12 text-luxtel-purple dark:text-luxtel-purple opacity-80">
+            <img src="images/logo.png" alt="Luxtel Internet Logo" class="mx-auto h-24 sm:h-28 w-auto mb-6">
+            <p class="mt-4 text-gray-600 dark:text-gray-400">&copy; Glossário Técnico Essencial. 2025.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // Glossary data
+        const glossaryItems = [
+            { title: "1. OLT (Optical Line Terminal)", content: "Equipamento central da rede PON localizado na operadora, responsável por gerenciar múltiplas ONUs e controlar o tráfego de dados na rede de fibra óptica." },
+            { title: "2. ONU/ONT (Optical Network Unit/Terminal)", content: "Equipamento instalado na casa do cliente que converte sinais ópticos em sinais elétricos, fornecendo conectividade através de portas Ethernet, Wi-Fi e telefone." },
+            { title: "3. Sinal Óptico (Rx Power / dBm)", content: "Medida da potência do sinal de luz recebido pela ONU, expressa em dBm. Valores típicos: - a -25 dBm. Sinais fora dessa faixa indicam problemas na fibra." },
+            { title: "4. Rede PON (Passive Optical Network)", content: "Arquitetura de rede que usa componentes ópticos passivos (splitters) para distribuir dados de uma OLT para múltiplas ONUs, sem necessidade de energia elétrica no percurso." },
+            { title: "5. Provisionamento", content: "Processo de configuração automática ou manual de equipamentos de rede, incluindo parâmetros de conectividade, VLANs, QoS e serviços do cliente." },
+            { title: "6. PPPoE (Point-to-Point Protocol over Ethernet)", content: "Protocolo que permite estabelecer conexões ponto-a-ponto sobre Ethernet, comumente usado por provedores para autenticação e controle de sessão." },
+            { title: "7. RADIUS (Remote Authentication Dial-In User Service)", content: "Protocolo de rede que fornece gerenciamento centralizado de autenticação, autorização e contabilização para usuários que se conectam e usam um serviço de rede." },
+            { title: "8. DHCP (Dynamic Host Configuration Protocol)", content: "Protocolo que automaticamente atribui endereços IP e outras configurações de rede para dispositivos conectados." },
+            { title: "9. VLAN (Virtual Local Area Network)", content: "Tecnologia que permite criar redes lógicas separadas dentro de uma mesma infraestrutura física, melhorando segurança e organização." },
+            { title: "10. MAC Address", content: "Identificador único de 48 bits atribuído a interfaces de rede, usado para comunicação na camada de enlace de dados." },
+            { title: "11. IP Público vs. IP Privado", content: "IPs públicos são roteáveis na internet, enquanto IPs privados são usados apenas em redes locais (192.168.x.x, 10.x.x.x, 172.16-31.x.x)." },
+            { title: "12. CGNAT (Carrier-Grade NAT)", content: "Tecnologia que permite que múltiplos clientes compartilhem um único endereço IP público, usado por provedores para economizar endereços IPv4." },
+            { title: "13. NAT (Network Address Translation)", content: "Processo que modifica informações de endereço IP em cabeçalhos de pacotes enquanto estão em trânsito, permitindo que múltiplos dispositivos compartilhem um IP público." },
+            { title: "14. Gateway", content: "Dispositivo que atua como ponto de entrada/saída entre diferentes redes, geralmente o roteador que conecta a rede local à internet." },
+            { title: "15. DNS (Domain Name System)", content: "Sistema que traduz nomes de domínio legíveis por humanos em endereços IP que os computadores podem entender." },
+            { title: "16. Latência (Ping)", content: "Tempo que um pacote de dados leva para viajar de um ponto a outro na rede, medido em milissegundos (ms)." },
+            { title: "17. Jitter", content: "Variação no tempo de chegada de pacotes de dados, que pode causar problemas em aplicações sensíveis ao tempo como VoIP e videoconferência." },
+            { title: "18. Packet Loss (Perda de Pacotes)", content: "Situação onde pacotes de dados não chegam ao destino, causando degradação na qualidade da conexão." },
+            { title: "19. Tracert / Ping", content: "Ferramentas de diagnóstico de rede. Ping testa conectividade, tracert mostra o caminho que os pacotes percorrem até o destino." },
+            { title: "20. MTU (Maximum Transmission Unit)", content: "Tamanho máximo de um pacote de dados que pode ser transmitido em uma rede sem fragmentação, tipicamente 1500 bytes para Ethernet." },
+            { title: "21. Modo Bridge vs. Modo Roteador", content: "Bridge apenas repassa dados sem modificação, enquanto roteador processa e direciona tráfego entre diferentes redes." },
+            { title: "22. Duplo NAT", content: "Situação onde dois dispositivos NAT estão em série, podendo causar problemas de conectividade para alguns serviços e aplicações." },
+            { title: "23. Canais Wi-Fi e Interferência", content: "Frequências específicas usadas pelo Wi-Fi. Interferência ocorre quando múltiplos dispositivos usam o mesmo canal ou canais sobrepostos." },
+            { title: "24. Firmware", content: "Software de baixo nível armazenado em hardware que controla funções básicas do dispositivo. Atualizações podem corrigir bugs e adicionar recursos." },
+            { title: "25. QoS (Quality of Service)", content: "Conjunto de tecnologias que garantem performance adequada para aplicações críticas, priorizando certos tipos de tráfego." },
+            { title: "26. Firewall", content: "Sistema de segurança que monitora e controla tráfego de rede baseado em regras de segurança predeterminadas." },
+            { title: "27. Ataques DDoS (Negação de Serviço)", content: "Tentativa maliciosa de tornar um serviço indisponível sobrecarregando-o com tráfego de múltiplas fontes." },
+            { title: "28. BGP (Border Gateway Protocol)", content: "Protocolo de roteamento usado para trocar informações de roteamento entre diferentes sistemas autônomos na internet." },
+            { title: "29. Sub-rede (Subnetting)", content: "Divisão de uma rede IP em redes menores para melhor organização, segurança e eficiência no uso de endereços." },
+            { title: "30. IPv6", content: "Nova versão do protocolo IP com endereços de 128 bits, criada para resolver a escassez de endereços IPv4." },
+            { title: "31. Banda Larga vs. Banda Estreita", content: "Banda larga oferece alta velocidade de transmissão de dados, enquanto banda estreita tem velocidades limitadas." },
+            { title: "32. Upload vs. Download", content: "Download é receber dados da internet, upload é enviar dados para a internet. Velocidades podem ser assimétricas." },
+            { title: "33. Cabo de Rede (Cat5e, Cat6)", content: "Cabos Ethernet de diferentes categorias com capacidades distintas de velocidade e frequência." },
+            { title: "34. Switch vs. Hub", content: "Switch cria domínios de colisão separados e é mais eficiente, hub compartilha largura de banda entre todas as portas." },
+            { title: "35. Roteamento Estático vs. Dinâmico", content: "Roteamento estático usa rotas configuradas manualmente, dinâmico usa protocolos para descobrir rotas automaticamente." },
+            { title: "36. Autenticação WPA/WPA2/WPA3", content: "Protocolos de segurança Wi-Fi. WPA3 é o mais recente e seguro, WPA2 ainda é amplamente usado, WPA é obsoleto." },
+            { title: "37. Problemas de Conectividade Intermitente", content: "Falhas esporádicas de conexão que podem ser causadas por interferência, problemas de hardware ou configuração inadequada." },
+            { title: "38. Sobrecarga de Rede", content: "Situação onde a demanda por largura de banda excede a capacidade disponível, causando lentidão e timeouts." },
+            { title: "39. Conexões Simultâneas Limitadas", content: "Limitação no número de dispositivos que podem conectar simultaneamente, causada por configurações do roteador ou limitações de hardware." },
+            { title: "40. Problemas de NAT em Jogos", content: "Dificuldades de conectividade em jogos online causadas por configurações restritivas de NAT, impedindo comunicação direta entre jogadores." },
+            { title: "41. Quedas de Conexão Periódicas", content: "Desconexões intermitentes da internet, podem ser causadas por problemas na linha, superaquecimento de equipamentos ou instabilidade da rede." },
+            { title: "42. Velocidade Abaixo do Contratado", content: "Performance inferior ao plano contratado, causada por problemas técnicos, congestionamento da rede ou limitações de infraestrutura." },
+            { title: "43. Problemas com VPN", content: "Dificuldades de conexão ou performance degradada ao usar VPN, relacionadas a bloqueios, configurações de firewall ou incompatibilidades de protocolo." },
+            { title: "44. Conflitos de IP na Rede", content: "Situação onde dois dispositivos possuem o mesmo endereço IP, causando problemas de conectividade e instabilidade na rede local." }
+        ];
+
+        // Function to render accordion
+        function renderAccordion(items = glossaryItems) {
+            const container = document.getElementById('accordionContainer');
+            container.innerHTML = '';
+
+            items.forEach((item, index) => {
+                const accordionItem = document.createElement('div');
+                accordionItem.className = 'accordion-item bg-white dark:bg-gray-800 border border-luxtel-pink-light dark:border-gray-600 rounded-lg shadow-sm overflow-hidden scroll-animate transition-colors duration-300';
+                
+                const button = document.createElement('button');
+                button.className = 'w-full flex justify-between items-center text-left p-4 md:p-5 hover:bg-luxtel-purple-light dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-luxtel-pink focus:ring-opacity-50 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg';
+                
+                const title = document.createElement('h2');
+                title.className = 'text-lg font-semibold text-luxtel-purple dark:text-luxtel-purple';
+                title.textContent = item.title;
+                
+                const icon = document.createElement('div');
+                icon.innerHTML = `<svg class="w-6 h-6 text-luxtel-pink dark:text-luxtel-pink transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
+                
+                button.appendChild(title);
+                button.appendChild(icon);
+                
+                const contentWrapper = document.createElement('div');
+                contentWrapper.className = 'accordion-content';
+                contentWrapper.id = `content-${index}`;
+                
+                const content = document.createElement('div');
+                content.className = 'p-4 md:p-5 border-t border-luxtel-pink-lighter dark:border-gray-600 text-gray-700 dark:text-gray-300 leading-relaxed';
+                content.innerHTML = item.content.replace(/\*\*(.*?)\*\*/g, '<strong class="text-luxtel-purple dark:text-luxtel-purple">$1</strong>').replace(/`(.*?)`/g, '<code class="bg-luxtel-pink-light dark:bg-gray-700 text-luxtel-pink-dark dark:text-luxtel-pink rounded px-1 py-0.5 text-sm">$1</code>');
+                
+                contentWrapper.appendChild(content);
+                accordionItem.appendChild(button);
+                accordionItem.appendChild(contentWrapper);
+                container.appendChild(accordionItem);
+                
+                button.addEventListener('click', () => {
+                    const isExpanded = contentWrapper.style.maxHeight && contentWrapper.style.maxHeight !== '0px';
+                    
+                    document.querySelectorAll('.accordion-content').forEach(el => {
+                        if (el !== contentWrapper) {
+                            el.style.maxHeight = '0px';
+                            el.previousElementSibling.querySelector('svg').classList.remove('rotate-180');
+                        }
+                    });
+                    
+                    if (isExpanded) {
+                        contentWrapper.style.maxHeight = '0px';
+                        icon.querySelector('svg').classList.remove('rotate-180');
+                    } else {
+                        contentWrapper.style.maxHeight = contentWrapper.scrollHeight + 'px';
+                        icon.querySelector('svg').classList.add('rotate-180');
+                    }
+                });
+            });
+
+            // Re-apply Intersection Observer for scroll animations
+            observeElements();
+        }
+
+        // Function to toggle accordion
+        function toggleAccordion(index) {
+            const content = document.getElementById(`content-${index}`);
+            const chevron = content.previousElementSibling.querySelector('svg');
+            
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                chevron.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('expanded');
+                chevron.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // PDF Export function
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Set page configuration
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const margin = 20;
+            const maxWidth = pageWidth - 2 * margin;
+            let yPosition = margin;
+            
+            // Add title
+            doc.setFontSize(20);
+            doc.setFont(undefined, 'bold');
+            doc.text('Glossário Técnico Essencial - Luxtel', margin, yPosition);
+            yPosition += 15;
+            
+            // Add date
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`, margin, yPosition);
+            yPosition += 20;
+            
+            // Add items
+            glossaryItems.forEach((item, index) => {
+                // Check if we need a new page
+                if (yPosition > pageHeight - 40) {
+                    doc.addPage();
+                    yPosition = margin;
+                }
+                
+                // Add title
+                doc.setFontSize(12);
+                doc.setFont(undefined, 'bold');
+                const titleLines = doc.splitTextToSize(item.title, maxWidth);
+                doc.text(titleLines, margin, yPosition);
+                yPosition += titleLines.length * 7;
+                
+                // Add content
+                doc.setFontSize(10);
+                doc.setFont(undefined, 'normal');
+                const contentLines = doc.splitTextToSize(item.content, maxWidth);
+                doc.text(contentLines, margin, yPosition);
+                yPosition += contentLines.length * 5 + 10;
+                
+                // Add separator line
+                if (index < glossaryItems.length - 1) {
+                    doc.setDrawColor(200, 200, 200);
+                    doc.line(margin, yPosition, pageWidth - margin, yPosition);
+                    yPosition += 10;
+                }
+            });
+            
+            doc.save('glossario-tecnico-luxtel.pdf');
+        }
+
+        // Excel Export function
+        function exportToExcel() {
+            const data = glossaryItems.map(item => ({
+                'Termo': item.title,
+                'Descrição': item.content
+            }));
+            
+            const ws = XLSX.utils.json_to_sheet(data);
+            
+            // Set column widths
+            ws['!cols'] = [
+                { width: 40 },
+                { width: 80 }
+            ];
+            
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Glossário Técnico');
+            XLSX.writeFile(wb, 'glossario-tecnico-luxtel.xlsx');
+        }
+
+        // --- Search functionality ---
+        const searchBar = document.getElementById('search-bar');
+        searchBar.addEventListener('keyup', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredItems = glossaryItems.filter(item => {
+                const title = item.title.toLowerCase();
+                const content = item.content.toLowerCase();
+                return title.includes(searchTerm) || content.includes(searchTerm);
+            });
+            renderAccordion(filteredItems);
+        });
+
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        function observeElements() {
+            document.querySelectorAll('.scroll-animate').forEach(el => {
+                observer.observe(el);
+            });
+        }
+        
+        // Theme toggle functionality
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+        // Check for saved user preference, if any, on load
+        if (localStorage.getItem('color-theme') === 'dark' || 
+            (!localStorage.getItem('color-theme') && 
+            window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            // Show light icon
+            themeToggleLightIcon.classList.remove('hidden');
+            document.documentElement.classList.add('dark');
+        } else {
+            // Show dark icon
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+
+        // Listen for toggle button click
+        themeToggleBtn.addEventListener('click', function() {
+            // Toggle icons
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+
+            // Toggle dark class
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+
+        // Initial render
+        renderAccordion(glossaryItems);
+    </script>
+</body>
+</html>
