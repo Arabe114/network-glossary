@@ -251,6 +251,18 @@
                 <button onclick="filterByCategory('Problemas Comuns')" class="category-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600">
                     Problemas
                 </button>
+                <button onclick="filterByCategory('Streaming')" class="category-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600">
+                    Streaming
+                </button>
+                <button onclick="filterByCategory('Wireless')" class="category-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600">
+                    Wireless
+                </button>
+                <button onclick="filterByCategory('Gaming')" class="category-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600">
+                    Gaming
+                </button>
+                <button onclick="filterByCategory('Sites/Navegação')" class="category-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600">
+                    Sites/Navegação
+                </button>
             </div>
         </div>
 
@@ -349,7 +361,6 @@
                 { title: "QoS (Quality of Service)", content: "Conjunto de tecnologias que garantem performance adequada para aplicações críticas, priorizando certos tipos de tráfego." },
                 { title: "Throughput", content: "Taxa real de transferência de dados bem-sucedida através de um canal de comunicação, medida em bits por segundo (bps). Diferente da largura de banda teórica." },
                 { title: "RTT (Round Trip Time)", content: "Tempo total que um pacote leva para ir do origem ao destino e retornar, incluindo tempo de processamento. Importante para aplicações interativas." },
-                { title: "Bufferbloat", content: "Problema onde buffers excessivamente grandes em equipamentos de rede causam alta latência, mesmo com largura de banda disponível." },
                 { title: "Speed Test vs. Velocidade Real", content: "Testes de velocidade medem capacidade máxima em condições ideais, velocidade real varia conforme uso da rede, horário e aplicações ativas." },
                 { title: "Monitoramento de Largura de Banda", content: "Processo de acompanhar uso de dados em tempo real para identificar dispositivos ou aplicações que consomem mais recursos da rede." }
             ],
@@ -364,17 +375,33 @@
                 { title: "Banda 2.4GHz vs. 5GHz", content: "2.4GHz tem maior alcance mas menor velocidade e mais interferência. 5GHz oferece maior velocidade e menos interferência, mas menor alcance." },
                 { title: "MAC Filtering", content: "Recurso de segurança que permite ou bloqueia dispositivos específicos baseado em seus endereços MAC. Oferece segurança adicional mas pode ser contornado." }
             ],
-            "Problemas Comuns": [
-                { title: "Problemas de Conectividade Intermitente", content: "Falhas esporádicas de conexão que podem ser causadas por interferência, problemas de hardware ou configuração inadequada." },
-                { title: "Sobrecarga de Rede", content: "Situação onde a demanda por largura de banda excede a capacidade disponível, causando lentidão e timeouts." },
-                { title: "Conexões Simultâneas Limitadas", content: "Limitação no número de dispositivos que podem conectar simultaneamente, causada por configurações do roteador ou limitações de hardware." },
-                { title: "Problemas de NAT em Jogos", content: "Dificuldades de conectividade em jogos online causadas por configurações restritivas de NAT, impedindo comunicação direta entre jogadores." },
-                { title: "Quedas de Conexão Periódicas", content: "Desconexões intermitentes da internet, podem ser causadas por problemas na linha, superaquecimento de equipamentos ou instabilidade da rede." },
-                { title: "Velocidade Abaixo do Contratado", content: "Performance inferior ao plano contratado, causada por problemas técnicos, congestionamento da rede ou limitações de infraestrutura." },
-                { title: "Problemas com VPN", content: "Dificuldades de conexão ou performance degradada ao usar VPN, relacionadas a bloqueios, configurações de firewall ou incompatibilidades de protocolo." },
-                { title: "Wi-Fi Lento Próximo ao Roteador", content: "Situação onde dispositivos muito próximos ao roteador têm velocidade reduzida devido à potência excessiva do sinal, causando saturação do receptor." },
-                { title: "Dispositivos Não Conectam ao Wi-Fi", content: "Problemas de autenticação, incompatibilidade de protocolos de segurança, ou configurações incorretas que impedem conexão de novos dispositivos." },
-                { title: "Internet Funciona Mas Sites Não Carregam", content: "Problema comum relacionado a configurações de DNS incorretas, onde há conectividade física mas resolução de nomes falha." }
+            "Streaming": [
+                { title: "Buffer", content: "Área de memória temporária que armazena dados durante a transmissão de streaming. Um buffer adequado previne interrupções durante a reprodução." },
+                { title: "Bitrate", content: "Quantidade de dados transmitidos por segundo em um stream. Bitrates mais altos geralmente significam melhor qualidade de vídeo/áudio." },
+                { title: "Adaptive Bitrate Streaming", content: "Tecnologia que ajusta automaticamente a qualidade do stream baseado na velocidade da conexão do usuário." },
+                { title: "4K/Ultra HD Streaming", content: "Transmissão de vídeo em resolução 3840x2160 pixels. Requer conexões de alta velocidade (recomendado 25+ Mbps)." },
+                { title: "Latência em Streaming Ao Vivo", content: "Atraso entre o evento real e a exibição no dispositivo do usuário. Latência baixa é crucial para transmissões esportivas e jogos." }
+            ],
+            "Wireless": [
+                { title: "Wi-Fi 6 (802.11ax)", content: "Padrão mais recente de Wi-Fi que oferece maior velocidade, melhor desempenho em ambientes congestionados e maior eficiência energética." },
+                { title: "Mesh Wi-Fi", content: "Sistema de rede sem fio que usa múltiplos pontos de acesso para criar uma rede coesa com cobertura ampla e estável." },
+                { title: "Beamforming", content: "Tecnologia que direciona o sinal Wi-Fi especificamente para dispositivos conectados, melhorando força e estabilidade do sinal." },
+                { title: "MU-MIMO", content: "Multi-User Multiple Input Multiple Output - permite que roteadores comuniquem com múltiplos dispositivos simultaneamente." },
+                { title: "Band Steering", content: "Recurso que automaticamente direciona dispositivos para a banda 2.4GHz ou 5GHz mais adequada." }
+            ],
+            "Gaming": [
+                { title: "Ping", content: "Tempo de resposta entre dispositivo e servidor. Ping baixo (<50ms) é essencial para jogos online competitivos." },
+                { title: "Jitter", content: "Variação no tempo de resposta entre pacotes. Jitter alto causa instabilidade e lag em jogos online." },
+                { title: "Packet Loss", content: "Percentual de pacotes de dados que não chegam ao destino. Packet loss >2% pode tornar jogos online injogáveis." },
+                { title: "NAT Type", content: "Configuração de rede que afeta conectividade em jogos. NAT Type 1 (Open) é ideal para jogabilidade online." },
+                { title: "QoS para Gaming", content: "Quality of Service - prioriza tráfego de jogos para garantir performance consistente mesmo com outros dispositivos usando a rede." }
+            ],
+            "Sites/Navegação": [
+                { title: "DNS (Domain Name System)", content: "Sistema que traduz nomes de domínio (ex: google.com) em endereços IP. DNS rápido melhora tempo de carregamento de sites." },
+                { title: "CDN (Content Delivery Network)", content: "Rede de servidores distribuídos que entrega conteúdo web baseado na localização geográfica do usuário." },
+                { title: "HTTP/2 e HTTP/3", content: "Protocolos modernos que melhoram performance de carregamento de sites através de multiplexação e compressão." },
+                { title: "SSL/TLS Handshake", content: "Processo de estabelecimento de conexão segura entre navegador e servidor. Afeta tempo inicial de carregamento de sites HTTPS." },
+                { title: "Caching de Navegador", content: "Armazenamento local de recursos de sites para carregamento mais rápido em visitas subsequentes." }
             ]
         };
 
